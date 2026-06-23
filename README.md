@@ -1,6 +1,6 @@
 # Small Business Management System (Flutter)
 
-**Status:** Early Development / Prototype
+**Status:** Development
 
 A Flutter-based management system designed for small truck washing businesses.
 
