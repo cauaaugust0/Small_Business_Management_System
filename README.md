@@ -1,4 +1,4 @@
-# adg
+# Small_ManagementSystem
 
 A new Flutter project.
 
