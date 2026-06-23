@@ -1,4 +1,4 @@
-# Small Management System
+# Small-Business-Management-System
 
 A mobile management application developed in Flutter for small businesses.
 
