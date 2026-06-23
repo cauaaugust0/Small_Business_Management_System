@@ -1,102 +1,100 @@
-# Small-Business-Management-System
+# Small Business Management System (Flutter)
 
-A mobile management application developed in Flutter for small businesses.
+**Status:** Early Development / Prototype
 
-The application was created to simplify the registration and tracking of customers, vehicles, services and maintenance history, replacing paper-based records with a digital solution.
+A Flutter-based management system designed for small truck washing businesses.
 
-The project is currently in active development and is being continuously refined as new requirements emerge.
+The goal is to simplify daily operations by providing tools for service registration, record management, reporting, and business analytics.
 
-## Project Goals
+## Goal
 
-The main goal of this project is to provide a practical management tool while improving software engineering and mobile development skills.
+Develop a lightweight management solution capable of:
 
-Technical goals include:
+* Recording daily truck wash services
+* Managing vehicles, services, and companies
+* Categorizing operations and records
+* Generating reports and business dashboards
+* Exporting operational data for external analysis
 
-* Mobile application development using Flutter.
-* Local data persistence using SQLite.
-* CRUD operations implementation.
-* Database modeling and relationships.
-* User interface development.
-* Form validation and input sanitization.
-* Software maintenance and iterative improvements.
-* Learning mobile software architecture.
+## Current Architecture
 
-## Current Features
+The application follows an **offline-first** approach, allowing daily operations to continue without an internet connection.
 
-* Company/customer registration.
-* Vehicle registration.
-* Additional service registration.
-* Service history registration.
-* Local SQLite database.
-* Relationship between service history and additional services.
-* Data persistence between sessions.
-* Input validation and sanitization.
+Data is stored locally using **SQLite**, providing fast access to records and ensuring information remains available even in environments with limited or no network connectivity.
 
-## Technologies
+### Database
+
+* Local SQLite database
+* Offline data persistence
+* No internet connection required for core features
+
+## Implemented Features
+
+### Management
+
+* Vehicle registration
+* Service registration
+* Company registration
+
+### Daily Operations
+
+* Daily wash registration
+* Automatic final price calculation
+
+### History
+
+* Historical records view
+* Service tracking and lookup
+
+## Upcoming Features
+
+### Data Management
+
+* Edit existing vehicle records
+* Edit existing service records
+* Edit existing company records
+
+### Exporting
+
+* Excel spreadsheet export
+* CSV export
+
+### Hardware Integration
+
+* Bluetooth thermal printer support
+* Receipt printing
+
+### Analytics
+
+* Operational dashboards
+* Revenue statistics
+* Service statistics
+* Category-based reporting
+
+## Roadmap
+
+* [x] Vehicle registration
+* [x] Service registration
+* [x] Company registration
+* [x] Daily wash records
+* [x] Final value calculation
+* [x] Record history
+* [x] SQLite local database
+* [x] Offline operation
+* [ ] Record editing
+* [ ] Bluetooth thermal printer integration
+* [ ] Excel export
+* [ ] CSV export
+* [ ] Dashboards and analytics
+
+## Tech Stack
 
 * Dart
 * Flutter
 * SQLite
-* sqflite
-* path
-* Material Design
 
-## Development Environment
+## Notes
 
-The project is currently developed and tested on Windows.
+This project is currently focused on delivering core functionality and validating business workflows. The application is designed to operate entirely offline, making it suitable for small businesses that require reliable access to operational data regardless of internet availability.
 
-## Project Structure
-
-```text
-lib/
-├── main.dart
-├── logic.dart
-├── utils.dart
-├── tela_menu.dart
-├── tela_empresas.dart
-├── tela_carros.dart
-├── tela_historico.dart
-└── tela_servicos.dart
-```
-
-## Build
-
-### Requirements
-
-* Flutter SDK
-* Dart SDK
-
-### Install dependencies
-
-```bash
-flutter pub get
-```
-
-### Run the application
-
-```bash
-flutter run
-```
-
-## Current State
-
-**Status:** Active Development / Maintenance
-
-The application is fully functional and currently being refined with new features, improvements and usability adjustments.
-
-## Planned Features
-
-* Update and delete operations.
-* Search and filtering system.
-* Report generation.
-* Export functionality.
-* Improved UI/UX.
-* Backup and restore system.
-* Cloud synchronization.
-* Authentication system.
-
-## Motivation
-
-This project was developed to solve a real-world problem by replacing manual records with a digital solution.
-
-Besides being used as a practical management tool, the project also serves as a learning platform for mobile development, database design and software engineering practices.
+Future development will prioritize reporting, data export capabilities, hardware integration, and user experience improvements.
