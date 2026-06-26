@@ -1,9 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 import 'utils.dart';
 import 'tela_menu.dart';
+import 'tela_editar_empresas.dart';
 
 class TelaEmpresas extends StatefulWidget {
   const TelaEmpresas({super.key});
@@ -32,6 +33,18 @@ class _TelaEmpresasState extends State<TelaEmpresas> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro de Empresas'),
+        actions:[
+          IconButton(icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const TelaEditarEmpresas(),
+              ),
+            );
+          },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -99,11 +112,6 @@ class _TelaEmpresasState extends State<TelaEmpresas> {
                     content: Text('Registro salvo'),
                   ),
                 );
-
-                print('$ln');
-                print('$ld');
-                print('$le');
-
               },
               child: const Text("Salvar"),
             ),
