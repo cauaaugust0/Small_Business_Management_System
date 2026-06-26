@@ -48,7 +48,7 @@ Data is stored locally using **SQLite**, providing fast access to records and en
 
 ## Upcoming Features
 
-### Data Management
+### Data Management (Finished)
 
 * Edit existing vehicle records
 * Edit existing service records
