@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 import 'utils.dart';
 import 'tela_menu.dart';
 import 'tela_historico.dart';
