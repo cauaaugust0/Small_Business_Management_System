@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'tela_menu.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
