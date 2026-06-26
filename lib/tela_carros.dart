@@ -1,9 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 import 'utils.dart';
 import 'tela_menu.dart';
+import 'tela_editar_carros.dart';
 
 class TelaCarros extends StatefulWidget {
   const TelaCarros({super.key});
@@ -30,6 +31,18 @@ class _TelaCarrosState extends State<TelaCarros> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro de Carros'),
+        actions:[
+          IconButton(icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const TelaEditarCarros(),
+              ),
+            );
+          },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
