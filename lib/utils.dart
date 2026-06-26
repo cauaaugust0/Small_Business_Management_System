@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:diacritic/diacritic.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 
 int calcularTotal(Carro? carroSelecionado, List<ServicoAdicional> saSelecionados){
     int vtotal = 0;
