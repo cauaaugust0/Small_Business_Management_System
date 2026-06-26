@@ -78,10 +78,10 @@ class BancoDeDados {
 		);
   }
 
-  Future<void> inserirEmpresa(Map<String, dynamic> dados) async {
-    final db = await this.db;
-    await db.insert('empresa', dados);
-  }
+	Future<void> inserirEmpresa(Map<String, dynamic> dados) async {
+		final db = await this.db;
+		await db.insert('empresa', dados);
+	}
 
 	Future<void> inserirCarro(Map<String, dynamic> dados) async {
 		final db = await this.db;
@@ -179,20 +179,53 @@ class BancoDeDados {
 	}
 
 	Future<String> buscarNomeEmpresa(int empresaId) async {
-	final db = await this.db;
+		final db = await this.db;
 
-	final resultado = await db.query(
-		'empresa',
-		where: 'id = ?',
-		whereArgs: [empresaId],
-	);
+		final resultado = await db.query(
+			'empresa',
+			where: 'id = ?',
+			whereArgs: [empresaId],
+		);
 
-	if (resultado.isEmpty) {
-		return 'Empresa não encontrada';
+		if (resultado.isEmpty) {
+			return 'Empresa não encontrada';
+		}
+
+		return resultado.first['nome'] as String;
 	}
 
-	return resultado.first['nome'] as String;
-}
+	Future<void> alterarEmpresa(Empresa empresa) async {
+		final db = await this.db;
+
+		await db.update(
+			'empresa',
+			empresa.toMap(),
+			where: 'id = ?',
+			whereArgs: [empresa.id],
+		);
+	}
+	
+	Future<void> alterarCarro(Carro carro) async {
+		final db = await this.db;
+
+		await db.update(
+			'carro',
+			carro.toMap(),
+			where: 'id = ?',
+			whereArgs: [carro.id],
+		);
+	}
+
+	Future<void> alterarServicoAdicional(ServicoAdicional servicoadicional) async {
+		final db = await this.db;
+
+		await db.update(
+			'servicoadicional',
+			servicoadicional.toMap(),
+			where: 'id = ?',
+			whereArgs: [servicoadicional.id],
+		);
+	}
 }
 
 class Empresa{
@@ -204,7 +237,7 @@ class Empresa{
 	Empresa({this.id, required this.nome, required this.cnpj, required this.email});
 
 	Map<String, dynamic>toMap(){
-		return{'id': id, 'nome': nome, 'cnpj': cnpj, 'email': email};
+		return{'nome': nome, 'cnpj': cnpj, 'email': email};
 	}
 }
 
@@ -215,7 +248,7 @@ class Carro{
 
 	Carro({this.id, required this.nome, required this.valor});
 	Map<String, dynamic>toMap(){
-		return{'id': id, 'nome': nome, 'valor': valor};
+		return{'nome': nome, 'valor': valor};
 	}
 
 	@override
@@ -236,7 +269,7 @@ class ServicoAdicional{
 
 	ServicoAdicional({this.id, required this.nome, required this.valor});
 	Map<String, dynamic>toMap(){
-		return{'id': id, 'nome': nome, 'valor': valor};
+		return{'nome': nome, 'valor': valor};
 	}
 
 	@override
@@ -262,7 +295,7 @@ class Historico{
 	Historico({this.id, this.empresaid, required this.placa, this.carroid, required this.data, required this.descricao, required this.total});
 
 	Map<String, dynamic>toMap(){
-		return{'id': id, 'empresaid': empresaid, 'placa': placa, 'carroid': carroid, 'data': data, 'descricao': descricao, 'total': total};
+		return{'empresaid': empresaid, 'placa': placa, 'carroid': carroid, 'data': data, 'descricao': descricao, 'total': total};
 	}
 }
 
@@ -274,6 +307,6 @@ class Historico_Servico{
 	Historico_Servico({this.id, this.historicoid, this.servicoid});
 
 	Map<String, dynamic>toMap(){
-		return{'id': id, 'historicoid': historicoid, 'servicoid': servicoid};
+		return{'historicoid': historicoid, 'servicoid': servicoid};
 	}
 }
