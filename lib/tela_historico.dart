@@ -1,197 +1,119 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'logic.dart';
+import 'db_logic.dart';
 import 'utils.dart';
 import 'tela_menu.dart';
+import 'tela_editar_servicosadicionais.dart';
 
-class TelaHistorico extends StatefulWidget {
-  const TelaHistorico({super.key});
+class TelaServicosAdicionais extends StatefulWidget {
+  const TelaServicosAdicionais({super.key});
 
   @override
-  State<TelaHistorico> createState() => _TelaHistoricoState();
+  State<TelaServicosAdicionais> createState() => _TelaServicosAdicionaisState();
 }
 
-class _TelaHistoricoState extends State<TelaHistorico> {
+class _TelaServicosAdicionaisState extends State<TelaServicosAdicionais> {
   final db = BancoDeDados.instance;
+
+  final nomeController = TextEditingController();
+  final valorController = TextEditingController();
+
+  @override
+  void dispose() {
+    nomeController.dispose();
+    valorController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Histórico'),
-      ),
-
-      body: FutureBuilder<List<Historico>>(
-        future: db.buscarHistorico(),
-        builder: (context, snapshot) {
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final lista = snapshot.data!;
-
-          if (lista.isEmpty) {
-            return const Center(
-              child: Text("Nenhum registro encontrado"),
+        title: const Text('Cadastro de Outros Serviços'),
+        actions:[
+          IconButton(icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const TelaEditarServicosAdicionais(),
+              ),
             );
-          }
+          },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
 
-          return ListView.builder(
-            itemCount: lista.length,
-            itemBuilder: (context, index) {
+            const Text('Nome'),
+            TextField(controller: nomeController),
 
-              final item = lista[index];
+            const SizedBox(height: 10),
 
-              final data = DateTime.fromMillisecondsSinceEpoch(item.data);
+            const Text('Valor'),
+            TextField(controller: valorController),
 
-              return Card(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                elevation: 3,
-                child: ListTile(
-                  title: FutureBuilder<String>(
-                  future: db.buscarNomeEmpresa(item.empresaid!),
-                  builder: (context, snapshot) {
+            const SizedBox(height: 10),
 
-                    if (!snapshot.hasData) {
-                      return const Text('Carregando...');
-                    }
+            ElevatedButton(
+              onPressed: () async {
+                String nome = nomeController.text;
+                String ln = limparNome(nome);
 
-                    return Text(snapshot.data!);
-                  },
-                ),
-                  subtitle: Text(item.placa),
-                  trailing: Text(
-                    "R\$ ${(item.total / 100)}",
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            TelaDetalhesHistorico(item: item),
+                String valor = valorController.text;
+                if (valor.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Digite um valor'),
                       ),
                     );
-                  },
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class TelaDetalhesHistorico extends StatelessWidget {
-  final db = BancoDeDados.instance;
-  
-  final Historico item;
-
-  TelaDetalhesHistorico({
-    super.key,
-    required this.item,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-
-    final data =
-        DateTime.fromMillisecondsSinceEpoch(item.data);
-
-    return Scaffold(
-
-      appBar: AppBar(
-        title: 
-        FutureBuilder<String>(
-          future: db.buscarNomeEmpresa(item.empresaid!),
-          builder: (context, snapshot) {
-
-            if (!snapshot.hasData) {
-              return const Text('Carregando...');
-            }
-
-            return Text(snapshot.data!);
-          },
-        ),
-      ),
-
-      body: SingleChildScrollView(
-
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Nome',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              FutureBuilder<String>(
-                future: db.buscarNomeEmpresa(item.empresaid!),
-                builder: (context, snapshot) {
-
-                  if (!snapshot.hasData) {
-                    return const Text('Carregando...');
+                    return;
                   }
+                int cv = converterValor(valor);
+                if(cv <= 0){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Digite um valor válido'),
+                    ),
+                  );
+                  return;                  
+                }
 
-                  return Text(snapshot.data!);
-                },
-              ),
-              const SizedBox(height: 20),
+                if (ln.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Digite um nome'),
+                    ),
+                  );
+                  return;
+                }
 
-              const Text(
-                'Placa',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              Text(item.placa),
-              const SizedBox(height: 20),
+                ServicoAdicional sa = ServicoAdicional(
+                  nome: ln,
+                  valor: cv,
+                );
 
-              const Text(
-                'total',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              Text("R\$ ${(item.total / 100)}"),
-              const SizedBox(height: 20),
+                await db.inserirServicoAdicional(sa.toMap());
 
-              const Text(
-                'Descrição',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              Text(item.descricao),
-              const SizedBox(height: 20),
+                nomeController.clear();
+                valorController.clear();
 
-              const Text(
-                'Data',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              Text(
-                "${data.day}/${data.month}/${data.year} "
-                "${data.hour}:${data.minute}",
-              ),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Registro salvo'),
+                  ),
+                );
 
-            ],
-          ),
+                print('$ln');
+                print('$cv');
+              },
+              child: const Text("Salvar"),
+            ),
+          ],
         ),
       ),
     );
